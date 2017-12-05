@@ -64,13 +64,30 @@ class BountyTracker
 
   def self.find_by_price(min_price)
     db = BountyTracker.create_connection()
-    sql = "SELECT name, bounty_value FROM space_cowboys
+    sql = "SELECT * FROM space_cowboys
           WHERE bounty_value > $1"
-          values = [min_price]
-          db.prepare("find_by_price", sql)
-          bounty = db.exec_prepared("find_by_price", values)
-          db.close()
-          return bounty.map {|bounty| BountyTracker.new(bounty)}
+    values = [min_price]
+    db.prepare("find_by_price", sql)
+    bounty = db.exec_prepared("find_by_price", values)
+    db.close()
+    return bounty.map {|bounty| BountyTracker.new(bounty)}
+  end
+
+  def self.all()
+    db = BountyTracker.create_connection()
+    sql = "SELECT * FROM space_cowboys"
+    db.prepare("all", sql)
+    bounty = db.exec_prepared("all")
+    db.close()
+    return bounty.map {|bounty| BountyTracker.new(bounty)}
+  end
+
+  def self.delete_all()
+    db = BountyTracker.create_connection()
+    sql = "DELETE FROM space_cowboys"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
   end
 
 
