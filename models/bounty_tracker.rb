@@ -62,5 +62,16 @@ class BountyTracker
     return bounty.map{|bounty| BountyTracker.new(bounty)}[0]
   end
 
+  def self.find_by_price(min_price)
+    db = BountyTracker.create_connection()
+    sql = "SELECT name, bounty_value FROM space_cowboys
+          WHERE bounty_value > $1"
+          values = [min_price]
+          db.prepare("find_by_price", sql)
+          bounty = db.exec_prepared("find_by_price", values)
+          db.close()
+          return bounty.map {|bounty| BountyTracker.new(bounty)}
+  end
+
 
 end

@@ -1,4 +1,4 @@
-
+require("pry-byebug")
 require_relative('./models/bounty_tracker')
 
 
@@ -19,4 +19,8 @@ space_cowboy_1.update
 #space_cowboy_2.delete
 
 eric = BountyTracker.find("Eric")
-p eric
+
+BountyTracker.find_by_price(15000)
+
+binding.pry
+nil
